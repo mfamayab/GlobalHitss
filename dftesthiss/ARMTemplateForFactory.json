@@ -1,0 +1,680 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Nombre de instancia de Data Factory",
+			"defaultValue": "dftesthiss"
+		},
+		"AzureBlobStorage1Hitss_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"AzureBlobStorage1Hitss\""
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"AzureSqlDatabase1\""
+		},
+		"AzureSqlDatabase2_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"AzureSqlDatabase2\""
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/CopyPipeline_kk8')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy_kk8",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "casoscovid//data_covid_20k_19012022.xlsx"
+							},
+							{
+								"name": "Destination",
+								"value": "dbo.casoscovid"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"maxConcurrentConnections": 10,
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink"
+							},
+							"enableStaging": false,
+							"validateDataConsistency": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "fecha reporte web",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fecha reporte web",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "ID de caso",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ID de caso",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "Fecha de notificación",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Fecha de notificación",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "Código DIVIPOLA departamento",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Código DIVIPOLA departamento",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "Nombre departamento",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Nombre departamento",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Código DIVIPOLA municipio",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Código DIVIPOLA municipio",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "Fecha de diagnóstico",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Fecha de diagnóstico",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "Fecha de recuperación",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Fecha de recuperación",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "Tipo de recuperación",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Tipo de recuperación",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Pertenencia étnica",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Pertenencia étnica",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "Estado",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Estado",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Código ISO del país",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Código ISO del país",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "Nombre del país",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Nombre del país",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Recuperado",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Recuperado",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Fecha de inicio de síntomas",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Fecha de inicio de síntomas",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "Fecha de muerte",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Fecha de muerte",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Nombre municipio",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Nombre municipio",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Edad",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Edad",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "Unidad de medida de edad",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Unidad de medida de edad",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "Sexo",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Sexo",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Tipo de contagio",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Tipo de contagio",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Ubicación del caso",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Ubicación del caso",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SourceDataset_kk8",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DestinationDataset_kk8",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SourceDataset_kk8')]",
+				"[concat(variables('factoryId'), '/datasets/DestinationDataset_kk8')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DestinationDataset_kk8')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "fecha reporte web",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "ID de caso",
+						"type": "float",
+						"precision": 53,
+						"scale": 0
+					},
+					{
+						"name": "Fecha de notificación",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Código DIVIPOLA departamento",
+						"type": "float",
+						"precision": 53,
+						"scale": 0
+					},
+					{
+						"name": "Nombre departamento",
+						"type": "nvarchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Código DIVIPOLA municipio",
+						"type": "float",
+						"precision": 53,
+						"scale": 0
+					},
+					{
+						"name": "Fecha de diagnóstico",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Fecha de recuperación",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Tipo de recuperación",
+						"type": "nvarchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Pertenencia étnica",
+						"type": "float",
+						"precision": 53,
+						"scale": 0
+					},
+					{
+						"name": "Estado",
+						"type": "nvarchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Código ISO del país",
+						"type": "float",
+						"precision": 53,
+						"scale": 0
+					},
+					{
+						"name": "Nombre del país",
+						"type": "nvarchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Recuperado",
+						"type": "nvarchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Fecha de inicio de síntomas",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Fecha de muerte",
+						"type": "nvarchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Nombre municipio",
+						"type": "nvarchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Edad",
+						"type": "float",
+						"precision": 53,
+						"scale": 0
+					},
+					{
+						"name": "Unidad de medida de edad",
+						"type": "float",
+						"precision": 53,
+						"scale": 0
+					},
+					{
+						"name": "Sexo",
+						"type": "nvarchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Tipo de contagio",
+						"type": "nvarchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Ubicación del caso",
+						"type": "nvarchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "casoscovid"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_kk8')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1Hitss",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Sheet1",
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "data_covid_20k_19012022.xlsx",
+						"container": "casoscovid"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "fecha reporte web",
+						"type": "String"
+					},
+					{
+						"name": "ID de caso",
+						"type": "String"
+					},
+					{
+						"name": "Fecha de notificación",
+						"type": "String"
+					},
+					{
+						"name": "Código DIVIPOLA departamento",
+						"type": "String"
+					},
+					{
+						"name": "Nombre departamento",
+						"type": "String"
+					},
+					{
+						"name": "Código DIVIPOLA municipio",
+						"type": "String"
+					},
+					{
+						"name": "Nombre municipio",
+						"type": "String"
+					},
+					{
+						"name": "Edad",
+						"type": "String"
+					},
+					{
+						"name": "Unidad de medida de edad",
+						"type": "String"
+					},
+					{
+						"name": "Sexo",
+						"type": "String"
+					},
+					{
+						"name": "Tipo de contagio",
+						"type": "String"
+					},
+					{
+						"name": "Ubicación del caso",
+						"type": "String"
+					},
+					{
+						"name": "Estado",
+						"type": "String"
+					},
+					{
+						"name": "Código ISO del país",
+						"type": "String"
+					},
+					{
+						"name": "Nombre del país",
+						"type": "String"
+					},
+					{
+						"name": "Recuperado",
+						"type": "String"
+					},
+					{
+						"name": "Fecha de inicio de síntomas",
+						"type": "String"
+					},
+					{
+						"name": "Fecha de muerte",
+						"type": "String"
+					},
+					{
+						"name": "Fecha de diagnóstico",
+						"type": "String"
+					},
+					{
+						"name": "Fecha de recuperación",
+						"type": "String"
+					},
+					{
+						"name": "Tipo de recuperación",
+						"type": "String"
+					},
+					{
+						"name": "Pertenencia étnica",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1Hitss')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1Hitss')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage1Hitss_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSqlDatabase1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSqlDatabase2_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
